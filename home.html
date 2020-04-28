@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <head>
+    </head>
+
+    <body>
+        <div class="row" justify="center" align="center">
+            <div class="column">
+                <input type="text" id="roomID" size="64" placeholder="Room ID" autofocus />
+            </div>
+            <div class="column">
+                <button onclick="myFunction()">Create Room</button>
+            </div>
+        </div>
+    </body>
+</body>
+
+</html>
+
+<script>
+    function myFunction() {
+        var roomID = document.getElementById("roomID").value;
+        if (roomID === "") {
+            return
+        };
+
+        location.pathname = "/" + roomID;
+    }
+</script>
