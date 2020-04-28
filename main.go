@@ -5,10 +5,10 @@
 package main
 
 import (
-	"flag"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -22,8 +22,6 @@ func init() {
 		log.Fatalln(terr)
 	}
 }
-
-var addr = flag.String("addr", ":8080", "http service address")
 
 func serveRoom(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	data := map[string]interface{}{
@@ -44,14 +42,18 @@ func ServeHome(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 }
 
 func main() {
-	flag.Parse()
 	go h.run()
 	router := httprouter.New()
 	router.GET("/:RoomID", serveRoom)
 	router.GET("/:RoomID/ws", serveWs)
 	router.GET("/", ServeHome)
 
-	err := http.ListenAndServe(*addr, router)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	err := http.ListenAndServe(port, router)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
